@@ -25,19 +25,18 @@
             android:layout_height="match_parent" >
 
             <ImageButton
-                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:id="@+id/imageButton2"
                 android:layout_weight="1"
                 android:src="@drawable/left2"
                 android:theme="@style/Base.Widget.AppCompat.ImageButton"
-                android:onClick="gooBack" />
+                android:onClick="gooBack"
+                android:layout_width="20pt" />
 
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textPersonName"
-                android:text="Name"
                 android:ems="10"
                 android:id="@+id/editText2"
                 android:layout_weight="1" />
@@ -63,7 +62,6 @@
             android:layout_height="match_parent" >
 
             <TextView
-                android:text="TextView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/textView2"
