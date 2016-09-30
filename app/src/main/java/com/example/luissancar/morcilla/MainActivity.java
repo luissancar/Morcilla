@@ -10,11 +10,12 @@ import android.view.View;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
     WebView w;
-
+    TextView footer;
     EditText url;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,7 +23,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
 
-
+        footer=(TextView)findViewById(R.id.textView2);
         w=(WebView)findViewById(R.id.web);
         w.setWebViewClient(new WebViewClient());  // al hacer click no salta a otro navegador
         url=(EditText)findViewById(R.id.editText2);
@@ -36,6 +37,7 @@ public class MainActivity extends AppCompatActivity {
                         (keyCode == KeyEvent.KEYCODE_ENTER)) {
                     // Perform action on key press
                     goWeb();
+
                     return true;
                 }
                 return false;
@@ -49,7 +51,9 @@ public class MainActivity extends AppCompatActivity {
      public void goWeb() {
 
          //Bundle bun=getIntent().getExtras();
+         footer.setText("Esperando a: "+url.getText().toString());
          w.loadUrl("http://"+url.getText().toString());
+         footer.setText(w.getUrl().toString());
      }
 
      public void gooBack(View v) {
