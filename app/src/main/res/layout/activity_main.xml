@@ -25,25 +25,38 @@
             android:layout_height="match_parent"
             android:baselineAligned="false">
 
-            <ImageButton
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:id="@+id/imageButton2"
-                android:layout_weight="1"
-                android:src="@drawable/left2"
-                android:background="@android:color/transparent"
-                android:theme="@style/Base.Widget.AppCompat.ImageButton"
-                android:onClick="gooBack" />
-
-            <EditText
+            <LinearLayout
+                android:orientation="horizontal"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="textPersonName"
-                android:text="Name"
-                android:ems="10"
-                android:id="@+id/editText2"
-                android:layout_weight="1"
-                tools:layout_width="match_parent" />
+                android:layout_height="match_parent">
+
+
+
+
+                <ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/imageButton2"
+                    android:src="@drawable/left2"
+                    android:background="@android:color/transparent"
+                    android:theme="@style/Base.Widget.AppCompat.ImageButton"
+                    android:onClick="gooBack"
+                    android:layout_gravity="left"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginLeft="10dp" />
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textPersonName"
+                    android:text="Name"
+                    android:ems="10"
+                    android:id="@+id/editText2"
+                    tools:layout_width="match_parent"
+                    android:gravity="left" />
+            </LinearLayout>
+
+
         </TableRow>
 
         <TableRow
