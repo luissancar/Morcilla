@@ -2,6 +2,7 @@ package com.example.luissancar.morcilla;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.res.Configuration;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
@@ -34,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         final EditText edittext = (EditText) findViewById(R.id.editText2);
+
         edittext.setOnKeyListener(new View.OnKeyListener() {
             public boolean onKey(View v, int keyCode, KeyEvent event) {
                 // If the event is a key-down event on the "enter" button
@@ -51,8 +53,11 @@ public class MainActivity extends AppCompatActivity {
 
 
 
+
+
      public void goWeb() {
 
+         footer.setText("Esperando a: "+url.getText().toString());
          //Bundle bun=getIntent().getExtras();
          w.loadUrl("http://"+url.getText().toString());
          footer.setText(w.getUrl().toString());
