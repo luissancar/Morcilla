@@ -11,6 +11,7 @@ import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.webkit.URLUtil;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.EditText;
@@ -58,27 +59,30 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
-        outState.putString("url", (String) w.getUrl().toString() );
-        super.onSaveInstanceState(outState);
+        if (outState!=null) {
+            String url2=new  String();
+            outState.putString("url", (String) url2 );
+            url.setText(url2.toString());
+            super.onSaveInstanceState(outState);}
     }
 
     public void goWeb() {
-         if (url.getText().toString().trim().length()==0)
-             return;
-         footer.setText("Esperando a: "+url.getText().toString());
-         //Bundle bun=getIntent().getExtras();
-         if (url.getText().toString().startsWith("http://"))
+        if (!url.getText().toString().startsWith("http://"))
+            url.setText("http://" + url.getText().toString());
+         if (URLUtil.isNetworkUrl(url.getText().toString()) ) {
+             footer.setText("Esperando a: " + url.getText().toString());
              w.loadUrl(url.getText().toString());
-         else
-            w.loadUrl("http://"+url.getText().toString());
-         footer.setText(w.getUrl().toString());
+             footer.setText(url.getText().toString());
+         }
          //Lineas para ocultar el teclado virtual (Hide keyboard)
          InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
          imm.hideSoftInputFromWindow(url.getWindowToken(), 0);
      }
 
      public void gooBack(View v) {
-        w.goBack();
+
+         if (w.canGoBack())
+             w.goBack();
     }
 
 }
