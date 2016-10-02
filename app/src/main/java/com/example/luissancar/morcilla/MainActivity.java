@@ -6,6 +6,7 @@ import android.content.res.Configuration;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.View;
@@ -48,18 +49,28 @@ public class MainActivity extends AppCompatActivity {
                 return false;
             }
         });
+        if (savedInstanceState!=null) {
+            url.setText(savedInstanceState.getString("url"));
+            goWeb();
+        }
 
     }
 
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        outState.putString("url", (String) w.getUrl().toString() );
+        super.onSaveInstanceState(outState);
+    }
 
-
-
-
-     public void goWeb() {
-
+    public void goWeb() {
+         if (url.getText().toString().trim().length()==0)
+             return;
          footer.setText("Esperando a: "+url.getText().toString());
          //Bundle bun=getIntent().getExtras();
-         w.loadUrl("http://"+url.getText().toString());
+         if (url.getText().toString().startsWith("http://"))
+             w.loadUrl(url.getText().toString());
+         else
+            w.loadUrl("http://"+url.getText().toString());
          footer.setText(w.getUrl().toString());
          //Lineas para ocultar el teclado virtual (Hide keyboard)
          InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
