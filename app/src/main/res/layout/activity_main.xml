@@ -25,12 +25,12 @@
 
             android:layout_height="match_parent" >
 
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/white">
-
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:background="@color/white"
+                android:layout_marginRight="10dp">
 
 
 
@@ -38,11 +38,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/imageButton2"
-                android:src="@drawable/left2"
+                android:src="?android:attr/homeAsUpIndicator"
                 android:background="@android:color/transparent"
                 android:theme="@style/Base.Widget.AppCompat.ImageButton"
                 android:onClick="gooBack"
                 android:layout_gravity="left"
+
+                android:layout_marginTop="30dp"
                 android:layout_marginRight="20dp"
                 android:layout_marginLeft="10dp" />
 
@@ -50,13 +52,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textPersonName"
-                android:text="" android:background="@drawable/back"
+                android:text=""
+                android:background="@drawable/back"
 
                 android:ems="23"
                 android:id="@+id/editText2"
                 tools:layout_width="match_parent"
-                android:layout_weight="1"
-                android:layout_marginTop="25dp"
+                android:layout_marginTop="0dp"
                 android:layout_marginRight="30dp"
                 android:gravity="left"
                 android:elevation="0dp" />
