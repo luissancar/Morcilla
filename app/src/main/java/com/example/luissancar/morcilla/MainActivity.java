@@ -67,34 +67,28 @@ public class MainActivity extends AppCompatActivity {
         client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
     }
 
+    /**
+     * forma de guardar el estado
+     */
+    @Override
+    protected void onSaveInstanceState(Bundle estado) {
+        super.onSaveInstanceState(estado);
+        estado.putString("url", url.getText().toString());
+
+    }
+
+
+
 
     @Override
-    protected void onSaveInstanceState(Bundle instanceState)
-    {
-        super.onSaveInstanceState(instanceState);
-
-        instanceState.putString("uuu", url.toString()); // increment counter here
-    }
-
-
-
-    protected void onRestoreInstanceState(Bundle savedInstanceState)
-    {
-
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
-        String url2 = savedInstanceState.getString("uuu");
-        url.setText(url2.toString());
-       // goWeb();
-    }
+        url.setText(savedInstanceState.getString("url").toString());
+        goWeb();
 
 
-    public void onConfigurationChanged(Configuration newConfig)
-    {
-        super.onConfigurationChanged(newConfig);
-//
-// Do your work here...
-//
     }
+
 
 
     public void goWeb() {
