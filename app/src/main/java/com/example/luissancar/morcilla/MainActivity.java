@@ -63,9 +63,9 @@ public class MainActivity extends AppCompatActivity {
 
                 switch (motionEvent.getAction()) {
 
-                    case MotionEvent.ACTION_DOWN:
-                        if (fingerState == FINGER_RELEASED) fingerState = FINGER_TOUCHED;
-                        else fingerState = FINGER_UNDEFINED;
+                    case MotionEvent.ACTION_POINTER_DOWN:
+                        Toast.makeText(MainActivity.this, "up2", Toast.LENGTH_LONG).show();
+
                         break;
 
                     case MotionEvent.ACTION_UP:
