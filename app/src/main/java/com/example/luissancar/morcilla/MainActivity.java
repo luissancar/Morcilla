@@ -10,6 +10,7 @@ import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.KeyEvent;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.webkit.URLUtil;
@@ -45,6 +46,59 @@ public class MainActivity extends AppCompatActivity {
         w.setWebViewClient(new WebViewClient());  // al hacer click no salta a otro navegador
         url = (EditText) findViewById(R.id.editText2);
         footer = (TextView) findViewById(R.id.textView2);
+
+        w.setOnTouchListener(new View.OnTouchListener() {
+
+            public final static int FINGER_RELEASED = 0;
+            public final static int FINGER_TOUCHED = 1;
+            public final static int FINGER_DRAGGING = 2;
+            public final static int FINGER_UNDEFINED = 3;
+
+            private int fingerState = FINGER_RELEASED;
+
+
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+
+
+                switch (motionEvent.getAction()) {
+
+                    case MotionEvent.ACTION_DOWN:
+                        if (fingerState == FINGER_RELEASED) fingerState = FINGER_TOUCHED;
+                        else fingerState = FINGER_UNDEFINED;
+                        break;
+
+                    case MotionEvent.ACTION_UP:
+                        if(fingerState != FINGER_DRAGGING) {
+                            fingerState = FINGER_RELEASED;
+
+                            // Your onClick codes
+                            Toast.makeText(MainActivity.this, "up", Toast.LENGTH_LONG).show();
+
+
+
+
+                        }
+                        else if (fingerState == FINGER_DRAGGING) fingerState = FINGER_RELEASED;
+                        else fingerState = FINGER_UNDEFINED;
+                        break;
+
+                    case MotionEvent.ACTION_MOVE:
+                        if (fingerState == FINGER_TOUCHED || fingerState == FINGER_DRAGGING) fingerState = FINGER_DRAGGING;
+                        else fingerState = FINGER_UNDEFINED;
+                        break;
+
+                    default:
+                        fingerState = FINGER_UNDEFINED;
+
+                }
+
+                return false;
+            }
+        });
+
+
+
 
 
         final EditText edittext = (EditText) findViewById(R.id.editText2);
