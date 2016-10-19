@@ -1,5 +1,7 @@
 package com.example.luissancar.morcilla;
 
+import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.res.Configuration;
@@ -12,8 +14,11 @@ import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
 import android.webkit.URLUtil;
+import android.webkit.WebChromeClient;
+import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.EditText;
@@ -24,12 +29,20 @@ import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.appindexing.Thing;
 import com.google.android.gms.common.api.GoogleApiClient;
+import android.webkit.WebChromeClient;
+import android.widget.ProgressBar;
+
 
 public class MainActivity extends AppCompatActivity {
     WebView w;
 
     EditText url;
     TextView footer;
+    final Activity activity = this;
+    ProgressBar progressbar;
+
+
+
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
      * See https://g.co/AppIndexing/AndroidStudio for more information.
@@ -46,54 +59,30 @@ public class MainActivity extends AppCompatActivity {
         w.setWebViewClient(new WebViewClient());  // al hacer click no salta a otro navegador
         url = (EditText) findViewById(R.id.editText2);
         footer = (TextView) findViewById(R.id.textView2);
+        //////////
 
-        w.setOnTouchListener(new View.OnTouchListener() {
-
-            public final static int FINGER_RELEASED = 0;
-            public final static int FINGER_TOUCHED = 1;
-            public final static int FINGER_DRAGGING = 2;
-            public final static int FINGER_UNDEFINED = 3;
-
-            private int fingerState = FINGER_RELEASED;
+        WebSettings webSettings = w.getSettings();
+        webSettings.setJavaScriptEnabled(true);
 
 
+
+
+
+
+        progressbar = (ProgressBar) findViewById(R.id.progressBar);
+
+        w.setWebChromeClient(new WebChromeClient() {
             @Override
-            public boolean onTouch(View view, MotionEvent motionEvent) {
+            public void onProgressChanged(WebView view, int progress) {
+                progressbar.setProgress(0);
+                progressbar.setVisibility(View.VISIBLE);
+                MainActivity.this.setProgress(progress * 1000);
 
+                progressbar.incrementProgressBy(progress);
 
-                switch (motionEvent.getAction()) {
-
-                    case MotionEvent.ACTION_POINTER_DOWN:
-                        Toast.makeText(MainActivity.this, "up2", Toast.LENGTH_LONG).show();
-
-                        break;
-
-                    case MotionEvent.ACTION_UP:
-                        if(fingerState != FINGER_DRAGGING) {
-                            fingerState = FINGER_RELEASED;
-
-                            // Your onClick codes
-                            Toast.makeText(MainActivity.this, "up", Toast.LENGTH_LONG).show();
-
-
-
-
-                        }
-                        else if (fingerState == FINGER_DRAGGING) fingerState = FINGER_RELEASED;
-                        else fingerState = FINGER_UNDEFINED;
-                        break;
-
-                    case MotionEvent.ACTION_MOVE:
-                        if (fingerState == FINGER_TOUCHED || fingerState == FINGER_DRAGGING) fingerState = FINGER_DRAGGING;
-                        else fingerState = FINGER_UNDEFINED;
-                        break;
-
-                    default:
-                        fingerState = FINGER_UNDEFINED;
-
+                if (progress == 100) {
+                    progressbar.setVisibility(View.GONE);
                 }
-
-                return false;
             }
         });
 
@@ -119,6 +108,12 @@ public class MainActivity extends AppCompatActivity {
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
         client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
+
+
+
+        url.setText("http://iesayala.ddns.net");
+        goWeb();
+
     }
 
     /**
@@ -143,7 +138,18 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-
+    @Override
+    public void onBackPressed()
+    {
+        if (w.canGoBack())
+        {
+            w.goBack();
+        }
+        else
+        {
+            super.onBackPressed();
+        }
+    }
 
     public void goWeb() {
         if (!url.getText().toString().startsWith("http://"))
@@ -156,6 +162,8 @@ public class MainActivity extends AppCompatActivity {
         //Lineas para ocultar el teclado virtual (Hide keyboard)
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(url.getWindowToken(), 0);
+
+        w.requestFocus();
     }
 
     public void gooBack(View v) {
