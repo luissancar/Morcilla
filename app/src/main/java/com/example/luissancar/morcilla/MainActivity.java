@@ -2,9 +2,12 @@ package com.example.luissancar.morcilla;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.res.Configuration;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -116,6 +119,46 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    /// inserta url
+    public void insertaUrl() {
+
+
+        String urlBaseDatos = w.getUrl().toString();
+
+        SQLiteDatabase db = null;
+        AdminSQL admin = new AdminSQL(this, "urls", null, 1);
+        db = admin.getWritableDatabase();
+        db.beginTransaction();
+        try {
+            String sql = "SELECT url FROM url WHERE url='" + urlBaseDatos.toString()+"'";
+            Cursor cursor = db.rawQuery(sql, null);
+            if (!cursor.moveToFirst()) {
+                ContentValues registro = new ContentValues();
+                registro.put("url", urlBaseDatos.toString());
+                db.insert("url", null, registro);
+                db.setTransactionSuccessful();
+                // Toast.makeText(this, "Insertado", Toast.LENGTH_LONG).show();
+            } //else
+            //  Toast.makeText(this, "Error registro duplicado", Toast.LENGTH_LONG).show();
+        } catch (Exception e) {
+            Toast.makeText(this, "Erro:" + e.getMessage().toString(), Toast.LENGTH_LONG).show();
+        } finally {
+            db.endTransaction();
+            db.close();
+        }
+
+    }
+
+
+
+
+    ///////////
+
+
+
+
+
+
     /**
      * forma de guardar el estado
      */
@@ -162,6 +205,8 @@ public class MainActivity extends AppCompatActivity {
         //Lineas para ocultar el teclado virtual (Hide keyboard)
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(url.getWindowToken(), 0);
+
+        insertaUrl();
 
         w.requestFocus();
     }
