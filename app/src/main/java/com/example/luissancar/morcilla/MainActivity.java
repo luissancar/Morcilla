@@ -35,6 +35,8 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import android.webkit.WebChromeClient;
 import android.widget.ProgressBar;
 
+import java.util.Vector;
+
 
 public class MainActivity extends AppCompatActivity {
     WebView w;
@@ -43,6 +45,9 @@ public class MainActivity extends AppCompatActivity {
     TextView footer;
     final Activity activity = this;
     ProgressBar progressbar;
+    Vector<String> arrayUrls = new Vector<String>();
+
+
 
 
 
@@ -115,6 +120,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         url.setText("http://iesayala.ddns.net");
+        cargarArray();
         goWeb();
 
     }
@@ -137,6 +143,7 @@ public class MainActivity extends AppCompatActivity {
                 registro.put("url", urlBaseDatos.toString());
                 db.insert("url", null, registro);
                 db.setTransactionSuccessful();
+                cargarArray();
                 // Toast.makeText(this, "Insertado", Toast.LENGTH_LONG).show();
             } //else
             //  Toast.makeText(this, "Error registro duplicado", Toast.LENGTH_LONG).show();
@@ -154,6 +161,34 @@ public class MainActivity extends AppCompatActivity {
 
     ///////////
 
+/////// carga basedatos a array
+
+    public void cargarArray(){
+
+        SQLiteDatabase db = null;
+        AdminSQL admin = new AdminSQL(this, "urls", null, 1);
+        db = admin.getWritableDatabase();
+        arrayUrls.clear();
+        try {
+            String sql = "SELECT url FROM url WHERE 1";
+            Cursor cursor = db.rawQuery(sql, null);
+            while (cursor.moveToNext())
+           {
+                arrayUrls.add(cursor.getString(0));
+                // Toast.makeText(this, "Insertado", Toast.LENGTH_LONG).show();
+            } //else
+            //  Toast.makeText(this, "Error registro duplicado", Toast.LENGTH_LONG).show();
+        } catch (Exception e) {
+            Toast.makeText(this, "Erro:" + e.getMessage().toString(), Toast.LENGTH_LONG).show();
+        } finally {
+
+            db.close();
+        }
+
+    }
+
+
+    /////////
 
 
 
