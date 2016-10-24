@@ -42,7 +42,7 @@
                 <AutoCompleteTextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="textAutoComplete|textAutoCorrect"
+                    android:inputType="textAutoComplete"
                     android:text="" android:background="@drawable/cuadro2"
 
                     android:ems="23"

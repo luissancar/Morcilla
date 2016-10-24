@@ -136,6 +136,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         String urlBaseDatos = w.getUrl().toString();
+        boolean anadido=false;
 
         SQLiteDatabase db = null;
         AdminSQL admin = new AdminSQL(this, "urls", null, 1);
@@ -145,19 +146,22 @@ public class MainActivity extends AppCompatActivity {
             String sql = "SELECT url FROM url WHERE url='" + urlBaseDatos.toString()+"'";
             Cursor cursor = db.rawQuery(sql, null);
             if (!cursor.moveToFirst()) {
+                anadido=true;
                 ContentValues registro = new ContentValues();
                 registro.put("url", urlBaseDatos.toString());
                 db.insert("url", null, registro);
                 db.setTransactionSuccessful();
-                cargarArray();
+
                 // Toast.makeText(this, "Insertado", Toast.LENGTH_LONG).show();
             } //else
             //  Toast.makeText(this, "Error registro duplicado", Toast.LENGTH_LONG).show();
         } catch (Exception e) {
-            Toast.makeText(this, "Erro:" + e.getMessage().toString(), Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Erro1:" + e.getMessage().toString(), Toast.LENGTH_LONG).show();
         } finally {
             db.endTransaction();
             db.close();
+            if (anadido)
+                cargarArray();
         }
 
     }
@@ -171,25 +175,30 @@ public class MainActivity extends AppCompatActivity {
 
     public void cargarArray(){
 
-        SQLiteDatabase db = null;
+
+        SQLiteDatabase db2 = null;
         AdminSQL admin = new AdminSQL(this, "urls", null, 1);
-        db = admin.getWritableDatabase();
+        db2 = admin.getReadableDatabase();
+        db2.beginTransaction();
         arrayUrls.clear();
         try {
             String sql = "SELECT url FROM url WHERE 1";
-            Cursor cursor = db.rawQuery(sql, null);
+            Cursor cursor = db2.rawQuery(sql, null);
             while (cursor.moveToNext())
            {
                 arrayUrls.add(cursor.getString(0));
                 arrayUrls.add(cursor.getString(0).substring(7,cursor.getString(0).length()-1));
                // Toast.makeText(this, cursor.getString(0).substring(7,cursor.getString(0).length()-1), Toast.LENGTH_LONG).show();
-            } //else
+            }
+            db2.setTransactionSuccessful();//else
             //  Toast.makeText(this, "Error registro duplicado", Toast.LENGTH_LONG).show();
         } catch (Exception e) {
-            Toast.makeText(this, "Erro:" + e.getMessage().toString(), Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Erro:2" + e.getMessage().toString(), Toast.LENGTH_LONG).show();
         } finally {
+            db2.endTransaction();
+            db2.close();
 
-            db.close();
+
         }
 
     }
