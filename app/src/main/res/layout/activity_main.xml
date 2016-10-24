@@ -48,10 +48,10 @@
                 android:layout_marginRight="20dp"
                 android:layout_marginLeft="10dp" />
 
-            <EditText
+            <AutoCompleteTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="textPersonName"
+                android:inputType="textAutoComplete|textAutoCorrect"
                 android:text=""
                 android:background="@drawable/back"
 

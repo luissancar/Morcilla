@@ -24,6 +24,8 @@ import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -41,7 +43,7 @@ import java.util.Vector;
 public class MainActivity extends AppCompatActivity {
     WebView w;
 
-    EditText url;
+    AutoCompleteTextView url;
     TextView footer;
     final Activity activity = this;
     ProgressBar progressbar;
@@ -65,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
 
         w = (WebView) findViewById(R.id.web);
         w.setWebViewClient(new WebViewClient());  // al hacer click no salta a otro navegador
-        url = (EditText) findViewById(R.id.editText2);
+        url = (AutoCompleteTextView) findViewById(R.id.editText2);
         footer = (TextView) findViewById(R.id.textView2);
         //////////
 
@@ -121,6 +123,10 @@ public class MainActivity extends AppCompatActivity {
 
         url.setText("http://iesayala.ddns.net");
         cargarArray();
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+                android.R.layout.simple_dropdown_item_1line, arrayUrls);
+        url.setAdapter(adapter);
         goWeb();
 
     }
@@ -175,7 +181,8 @@ public class MainActivity extends AppCompatActivity {
             while (cursor.moveToNext())
            {
                 arrayUrls.add(cursor.getString(0));
-                // Toast.makeText(this, "Insertado", Toast.LENGTH_LONG).show();
+                arrayUrls.add(cursor.getString(0).substring(7,cursor.getString(0).length()-1));
+               // Toast.makeText(this, cursor.getString(0).substring(7,cursor.getString(0).length()-1), Toast.LENGTH_LONG).show();
             } //else
             //  Toast.makeText(this, "Error registro duplicado", Toast.LENGTH_LONG).show();
         } catch (Exception e) {
