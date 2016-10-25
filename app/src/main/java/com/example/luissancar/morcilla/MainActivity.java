@@ -246,6 +246,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void goWeb() {
+        if (url.getText().length()==0)
+            return;
         if (!url.getText().toString().startsWith("http://"))
             url.setText("http://" + url.getText().toString());
         if (URLUtil.isNetworkUrl(url.getText().toString())) {
